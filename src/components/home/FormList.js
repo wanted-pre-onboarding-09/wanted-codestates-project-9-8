@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import Pagination from '../common/Pagination';
 
 function FormList() {
   const dataList = useSelector((state) => state.listSlice.data);
   const { selected, keyword } = useSelector((state) => state.filterSlice);
 
+  const [page, setPage] = useState(1);
+  const limit = 4;
+  const offset = (page - 1) * limit;
+
   return (
     <StyledFormList>
-      {dataList
-        .filter((el) => el[selected].includes(keyword))
-        .map((data) => {
-          const { id, title, address, officeNumber, memo } = data;
-          return (
-            <li key={id}>
-              <p className="title">{title}</p>
-              <p className="addrees">{address}</p>
-              <p className="officeNumber">{officeNumber}</p>
-              <p className="memo">{memo}</p>
-            </li>
-          );
-        })}
+      {dataList.filter((data) => data[selected].includes(keyword)).length ? (
+        <>
+          {dataList
+            .filter((data) => data[selected].includes(keyword))
+            .slice(offset, offset + limit)
+            .map((data) => {
+              const { id, title, address, officeNumber, memo } = data;
+              return (
+                <li key={id}>
+                  <p className="title">{title}</p>
+                  <p className="addrees">{address}</p>
+                  <p className="officeNumber">{officeNumber}</p>
+                  <p className="memo">{memo}</p>
+                </li>
+              );
+            })}
+          <Pagination
+            total={
+              dataList.filter((data) => data[selected].includes(keyword)).length
+            }
+            page={page}
+            setPage={setPage}
+            limit={limit}
+          />
+        </>
+      ) : (
+        <p>데이터가 없습니다.</p>
+      )}
     </StyledFormList>
   );
 }
