@@ -34,11 +34,25 @@ const listSlice = createSlice({
     addForm(state, action) {
       state.data = [...state.data, action.payload];
     },
-    createOrUpdateData(state, action) {
+    createData(state, action) {
       state.data = [...state.data, action.payload];
+    },
+    updateData(state, action) {
+      const updatedData = state.data.map((el) => {
+        if (el.id === action.payload.id) {
+          return { ...el, memo: action.payload.memo };
+        }
+        return el;
+      });
+      state.data = updatedData;
+    },
+    deleteData(state, action) {
+      const filterData = state.data.filter((el) => el.id !== action.payload);
+      state.data = [...filterData];
     },
   },
 });
 
-export const { addForm, createOrUpdateData } = listSlice.actions;
+export const { addForm, createData, updateData, deleteData } =
+  listSlice.actions;
 export default listSlice.reducer;
