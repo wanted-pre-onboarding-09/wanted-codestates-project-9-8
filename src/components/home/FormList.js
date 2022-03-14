@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { addForm } from '../../store/reducers/listSlice';
+import { useSelector } from 'react-redux';
 import Modal from '../modal/Modal';
 
 function FormList() {
   const dataList = useSelector((state) => state.listSlice.data);
-  const dispatch = useDispatch();
-  const click = () => {
-    dispatch(
-      addForm({
-        id: 4,
-        title: '문성자연휴양림',
-        address: '충청북도 충주시 노은면 우성1길 191',
-        officeNumber: '032-834-2111',
-        memo: '해위',
-      }),
-    );
-  };
+  const { selected, keyword } = useSelector((state) => state.filterSlice);
+
   const [isModal, setIsModal] = useState(false);
   const [modalData, setModalData] = useState();
 
@@ -29,28 +18,26 @@ function FormList() {
   const handleClose = () => {
     setIsModal(false);
   };
-
   return (
     <StyledFormList>
-      {dataList.map((data) => {
-        const { id, title, address, officeNumber, memo } = data;
-        return (
-          <li
-            key={id}
-            onClick={() => handleModal(data)}
-            onKeyDown={() => handleModal(data)}
-            role="presentation"
-          >
-            <p className="title">{title}</p>
-            <p className="addrees">{address}</p>
-            <p className="officeNumber">{officeNumber}</p>
-            <p className="memo">{memo}</p>
-          </li>
-        );
-      })}
-      <button onClick={click} type="button">
-        버튼임
-      </button>
+      {dataList
+        .filter((el) => el[selected].includes(keyword))
+        .map((data) => {
+          const { id, title, address, officeNumber, memo } = data;
+          return (
+            <li
+              key={id}
+              onClick={() => handleModal(data)}
+              onKeyDown={() => handleModal(data)}
+              role="presentation"
+            >
+              <p className="title">{title}</p>
+              <p className="addrees">{address}</p>
+              <p className="officeNumber">{officeNumber}</p>
+              <p className="memo">{memo}</p>
+            </li>
+          );
+        })}
       {isModal && (
         <Modal
           id={modalData.id}

@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { chageSelected, changeKeyword } from '../../store/reducers/filterSlice';
 
 function Header() {
   const OPTIONS = [
     { value: 'title', name: '이름' },
-    { value: 'addrees', name: '주소' },
+    { value: 'address', name: '주소' },
     { value: 'memo', name: '메모' },
   ];
-
-  const [selected, setSelected] = useState('title');
-  const [input, setInput] = useState('');
+  const { selected, keyword } = useSelector((state) => state.filterSlice);
+  const dispatch = useDispatch();
 
   const handleSelect = (e) => {
-    setSelected(e.target.value);
+    dispatch(chageSelected(e.target.value));
   };
 
   const handleChange = (e) => {
-    setInput(e.target.value);
+    dispatch(changeKeyword(e.target.value));
   };
 
   return (
@@ -28,7 +29,7 @@ function Header() {
           </option>
         ))}
       </select>
-      <input type="text" value={input} onChange={handleChange} />
+      <input type="text" value={keyword} onChange={handleChange} />
     </StyledHeaderWrap>
   );
 }
