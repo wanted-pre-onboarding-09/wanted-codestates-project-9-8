@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import ModalButton from './ModalButton';
 
 function Modal({ handleModal }) {
+  const [memo, setMemo] = useState();
+  const [isNull, setIsNull] = useState(true);
+
+  const handleMemo = (e) => {
+    const { value } = e.target;
+    setMemo(value);
+    if (value.length === 0) {
+      setIsNull(true);
+    } else {
+      setIsNull(false);
+    }
+  };
+
   const handleBackground = (e) => {
     if (e.target === e.currentTarget) {
       handleModal();
@@ -28,12 +41,31 @@ function Modal({ handleModal }) {
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">메모</StyledText>
-          <StyledInput placeholder="내용을 입력해주세요" />
+          <StyledInput
+            placeholder="내용을 입력해주세요"
+            value={memo}
+            onChange={handleMemo}
+          />
         </ModalBox>
         <ButtonBox>
-          {/* <ModalButton text="삭제" color="#ea3333" />
-          <ModalButton text="수정" color="#268b63" /> */}
-          <ModalButton text="저장" color="#268b63" />
+          {/* <ModalButton
+            text="삭제"
+            color="#ea3333"
+            disabled={isNull}
+            handleClick={() => {}}
+          />
+          <ModalButton
+            text="수정"
+            color="#268b63"
+            disabled={isNull}
+            handleClick={() => {}}
+          /> */}
+          <ModalButton
+            text="저장"
+            color="#268b63"
+            disabled={isNull}
+            handleClick={() => {}}
+          />
         </ButtonBox>
       </ModalContainer>
     </Background>
@@ -62,7 +94,6 @@ const Background = styled.div`
 
 const ModalContainer = styled.div`
   width: 400px;
-
   padding: 60px 30px 30px 30px;
   background-color: white;
   position: relative;
@@ -92,6 +123,7 @@ const ModalBox = styled.div`
 const StyledText = styled.p`
   text-align: left;
   color: ${(props) => props.color};
+  font-weight: 500;
   font-size: 16px;
   margin: 4px 0;
 `;
@@ -103,7 +135,8 @@ const StyledInput = styled.textarea`
   margin: 4px 0;
   padding: 4px;
   :focus {
-    outline: 1px solid #268b63;
+    outline: none;
+    border: 1px solid #000;
   }
 `;
 
