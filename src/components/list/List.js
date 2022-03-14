@@ -51,22 +51,22 @@ function List() {
 
   return (
     <div>
-<ListHeader />
-    <ListContainer>
-      {getData.slice(0, dateIndex.current).map((item, index) => (  
-        <ListCard
-          key={index}
-          id={item.fcNo}
-          name={item.fcNm}
-          address={item.fcAddr}
-          phone={item.ref1}
-          handleModal={() => handleModal(item)}
-        />
-      ))}
-      {isModal && <Modal handleClose={handleClose} data={modalData} />}
-      <LastBox ref={targetRef}>{}</LastBox>
-    </ListContainer>
-       </div>
+      <ListHeader />
+      <ListContainer>
+        {getData.slice(0, dateIndex.current).map((item, index) => (
+          <ListCard
+            key={index}
+            id={item.fcNo}
+            name={item.fcNm}
+            address={item.fcAddr}
+            phone={item.ref1}
+            handleModal={() => handleModal(item)}
+          />
+        ))}
+        {isModal && <Modal handleClose={handleClose} data={modalData} />}
+        <LastBox ref={targetRef}>{}</LastBox>
+      </ListContainer>
+    </div>
   );
 }
 
