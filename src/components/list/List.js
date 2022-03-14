@@ -63,7 +63,16 @@ function List() {
             handleModal={() => handleModal(item)}
           />
         ))}
-        {isModal && <Modal handleClose={handleClose} data={modalData} />}
+        {isModal && (
+          <Modal
+            id={modalData.fcNo}
+            title={modalData.fcNm}
+            address={modalData.fcAddr}
+            officeNumber={modalData.ref1}
+            handleClose={handleClose}
+            mode="create"
+          />
+        )}
         <LastBox ref={targetRef}>{}</LastBox>
       </ListContainer>
     </div>

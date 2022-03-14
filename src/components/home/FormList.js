@@ -2,10 +2,23 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import Pagination from '../common/Pagination';
+import Modal from '../modal/Modal';
 
 function FormList() {
   const dataList = useSelector((state) => state.listSlice.data);
   const { selected, keyword } = useSelector((state) => state.filterSlice);
+
+  const [isModal, setIsModal] = useState(false);
+  const [modalData, setModalData] = useState();
+
+  const handleModal = (data) => {
+    setIsModal(!isModal);
+    setModalData(data);
+  };
+
+  const handleClose = () => {
+    setIsModal(false);
+  };
 
   const [page, setPage] = useState(1);
   const limit = 4;
@@ -21,7 +34,12 @@ function FormList() {
             .map((data) => {
               const { id, title, address, officeNumber, memo } = data;
               return (
-                <li key={id}>
+                <li
+                  key={id}
+                  onClick={() => handleModal(data)}
+                  onKeyDown={() => handleModal(data)}
+                  role="presentation"
+                >
                   <p className="title">{title}</p>
                   <p className="addrees">{address}</p>
                   <p className="officeNumber">{officeNumber}</p>
@@ -40,6 +58,17 @@ function FormList() {
         </>
       ) : (
         <p>데이터가 없습니다.</p>
+      )}
+      {isModal && (
+        <Modal
+          id={modalData.id}
+          title={modalData.title}
+          address={modalData.address}
+          officeNumber={modalData.officeNumber}
+          memo={modalData.memo}
+          handleClose={handleClose}
+          mode="edit"
+        />
       )}
     </StyledFormList>
   );
