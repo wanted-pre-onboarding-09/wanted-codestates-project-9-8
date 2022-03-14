@@ -2,13 +2,13 @@ import React from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Header from './Header';
+import Search from './Search';
 import FormList from './FormList';
 
 function Home() {
   return (
     <>
-      <Header />
+      <Search />
       <FormList />
 
       <StyledPulsBtn>
