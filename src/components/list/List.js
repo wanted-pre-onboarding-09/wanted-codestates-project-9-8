@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListCard from './ListCard';
+import Modal from '../modal/Modal';
 
 function List() {
   const [getData, setGetData] = useState([]);
+
+  const [isModal, setIsModal] = useState(false);
+  const [modalData, setModalData] = useState();
+
+  const handleModal = (data) => {
+    setIsModal(!isModal);
+    setModalData(data);
+  };
+
+  const handleClose = () => {
+    setIsModal(false);
+  };
 
   useEffect(async () => {
     const { data } = await axios.get(
@@ -19,10 +32,12 @@ function List() {
         <ListCard
           id={item.fcNo}
           name={item.fcNm}
-          addres={item.fcAddr}
+          address={item.fcAddr}
           phone={item.ref1}
+          handleModal={() => handleModal(item)}
         />
       ))}
+      {isModal && <Modal handleClose={handleClose} data={modalData} />}
     </div>
   );
 }

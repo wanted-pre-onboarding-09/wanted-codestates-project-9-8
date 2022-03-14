@@ -11,7 +11,7 @@ function FormList() {
       addForm({
         id: 4,
         title: '문성자연휴양림',
-        addrees: '충청북도 충주시 노은면 우성1길 191',
+        address: '충청북도 충주시 노은면 우성1길 191',
         officeNumber: '032-834-2111',
         memo: '해위',
       }),
@@ -21,11 +21,11 @@ function FormList() {
   return (
     <StyledFormList>
       {dataList.map((data) => {
-        const { id, title, addrees, officeNumber, memo } = data;
+        const { id, title, address, officeNumber, memo } = data;
         return (
           <li key={id}>
             <p className="title">{title}</p>
-            <p className="addrees">{addrees}</p>
+            <p className="addrees">{address}</p>
             <p className="officeNumber">{officeNumber}</p>
             <p className="memo">{memo}</p>
           </li>
