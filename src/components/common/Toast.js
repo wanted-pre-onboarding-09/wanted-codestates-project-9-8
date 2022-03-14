@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/prop-types
 function Toast({ type }) {
   const [isFade, setIsFade] = useState(false);
   const [msg, setMsg] = useState('');
@@ -23,14 +22,21 @@ function Toast({ type }) {
         break;
 
       default:
-        break;
+        throw new Error(`unknown Toast type:${type}`);
     }
   }, []);
 
-  setTimeout(() => {
+  const handleFade = () => {
     setIsFade(true);
-    clearTimeout(setIsFade(true));
+  };
+
+  setTimeout(() => {
+    handleFade();
   }, 2000);
+
+  useEffect(() => {
+    clearTimeout(setIsFade(true));
+  }, []);
 
   return (
     <StyledToast isFade={isFade} msg={msg}>
@@ -70,7 +76,7 @@ const StyledToast = styled.div`
   }
 `;
 
-export default Toast;
-Toast.propsTypes = {
-  type: PropTypes.string,
+Toast.propTypes = {
+  type: PropTypes.string.isRequired,
 };
+export default Toast;
