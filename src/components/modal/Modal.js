@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
 import { useDispatch } from 'react-redux';
 import ModalButton from './ModalButton';
-import { createOrUpdateData } from '../../store/reducers/listSlice';
+import {
+  createData,
+  deleteData,
+  updateData,
+} from '../../store/reducers/listSlice';
 
-function Modal({ data, handleClose }) {
+function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
   const dispatch = useDispatch();
-  const [memo, setMemo] = useState();
-  const [isNull, setIsNull] = useState(true);
+  const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
+  const [isNull, setIsNull] = useState(mode !== 'edit');
 
   const handleMemo = (e) => {
     const { value } = e.target;
-    setMemo(value);
+    setTextarea(value);
     if (value.length === 0) {
       setIsNull(true);
     } else {
@@ -27,15 +30,23 @@ function Modal({ data, handleClose }) {
     }
   };
 
-  const OnCreateOrUpdate = () => {
+  const onCreate = () => {
     const settingData = {
-      id: data.fcNo,
-      title: data.fcNm,
-      address: data.fcAddr,
-      officeNumber: data.ref1,
+      id: Date.now(),
+      title,
+      address,
+      officeNumber,
     };
-    const newData = { ...settingData, memo };
-    dispatch(createOrUpdateData(newData));
+    const newData = { ...settingData, memo: textarea };
+    dispatch(createData(newData));
+  };
+
+  const onUpdate = (dataId) => {
+    dispatch(updateData({ id: dataId, memo: textarea }));
+  };
+
+  const onDelete = (dataId) => {
+    dispatch(deleteData(dataId));
   };
 
   return (
@@ -44,43 +55,48 @@ function Modal({ data, handleClose }) {
         <CloseBtn onClick={handleClose}>&times;</CloseBtn>
         <ModalBox>
           <StyledText color="#797979">이름</StyledText>
-          <StyledText>{data.fcNm}</StyledText>
+          <StyledText>{title}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">주소</StyledText>
-          <StyledText>{data.fcAddr}</StyledText>
+          <StyledText>{address}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">연락처</StyledText>
-          <StyledText>{data.ref1}</StyledText>
+          <StyledText>{officeNumber}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">메모</StyledText>
           <StyledInput
             placeholder="내용을 입력해주세요"
-            value={memo}
+            value={textarea}
             onChange={handleMemo}
           />
         </ModalBox>
         <ButtonBox>
-          {/* <ModalButton
-            text="삭제"
-            color="#ea3333"
-            disabled={isNull}
-            handleClick={() => {}}
-          />
-          <ModalButton
-            text="수정"
-            color="#268b63"
-            disabled={isNull}
-            handleClick={() => {}}
-          /> */}
-          <ModalButton
-            text="저장"
-            color="#268b63"
-            disabled={isNull}
-            handleClick={OnCreateOrUpdate}
-          />
+          {mode === 'edit' ? (
+            <>
+              <ModalButton
+                text="삭제"
+                color="#ea3333"
+                disabled={isNull}
+                handleClick={() => onDelete(id)}
+              />
+              <ModalButton
+                text="수정"
+                color="#268b63"
+                disabled={isNull}
+                handleClick={() => onUpdate(id)}
+              />
+            </>
+          ) : (
+            <ModalButton
+              text="저장"
+              color="#268b63"
+              disabled={isNull}
+              handleClick={onCreate}
+            />
+          )}
         </ButtonBox>
       </ModalContainer>
     </Background>
@@ -88,13 +104,17 @@ function Modal({ data, handleClose }) {
 }
 
 Modal.propTypes = {
-  data: PropTypes.shape({
-    fcNo: PropTypes.number,
-    fcNm: PropTypes.string,
-    fcAddr: PropTypes.string,
-    ref1: PropTypes.string,
-  }).isRequired,
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  officeNumber: PropTypes.string.isRequired,
+  memo: PropTypes.string,
+  mode: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired,
+};
+
+Modal.defaultProps = {
+  memo: '',
 };
 
 export default Modal;
