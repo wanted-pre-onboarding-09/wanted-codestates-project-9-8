@@ -29,6 +29,7 @@ const CardBox = styled.div`
   box-shadow: 5px 5px 8px 1px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  transition: all 200ms ease-in;
   li {
     text-align: center;
   }

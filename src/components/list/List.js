@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import ListCard from './ListCard';
 import Modal from '../modal/Modal';
+import ListHeader from './ListHeader';
 
 function List() {
   const [getData, setGetData] = useState([]);
@@ -49,8 +50,10 @@ function List() {
   }, [handleIntersect]);
 
   return (
+    <div>
+<ListHeader />
     <ListContainer>
-      {getData.slice(0, dateIndex.current).map((item, index) => (
+      {getData.slice(0, dateIndex.current).map((item, index) => (  
         <ListCard
           key={index}
           id={item.fcNo}
@@ -63,6 +66,7 @@ function List() {
       {isModal && <Modal handleClose={handleClose} data={modalData} />}
       <LastBox ref={targetRef}>{}</LastBox>
     </ListContainer>
+       </div>
   );
 }
 
