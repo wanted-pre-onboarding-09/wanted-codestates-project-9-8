@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const listCard = ({ id, name, addres, phone }) => {
-  const modal = (event) => {
-    console.log(event.target.id);
-  };
+const listCard = ({ id, name, address, phone, handleModal }) => {
+  // const modal = (event) => {
+  //   console.log(event.target.id);
+  // };
 
   return (
-    <CardBox id={id} onClick={modal}>
+    <CardBox id={id} onClick={handleModal}>
       <ul>
         <li>{name}</li>
-        <li>{addres}</li>
+        <li>{address}</li>
         <li>{phone}</li>
       </ul>
     </CardBox>
