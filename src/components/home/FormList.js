@@ -1,32 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { addForm } from '../../store/reducers/listSlice';
 
 function FormList() {
-  const mock = [
-    {
-      id: 1,
-      title: '문성자연휴양림',
-      addrees: '충청북도 충주시 노은면 우성1길 191',
-      officeNumber: '032-834-2111',
-      memo: 'ㅋㅋㅋㅋ',
-    },
-    {
-      id: 2,
-      title: '문성자연휴양림',
-      addrees: '충청북도 충주시 노은면 우성1길 191',
-      officeNumber: '032-834-2111',
-      memo: 'ㅋㅋㅋㅋ',
-    },
-    {
-      id: 3,
-      title: '문성자연휴양림',
-      addrees: '충청북도 충주시 노은면 우성1길 191',
-      officeNumber: '032-834-2111',
-      memo: 'ㅋㅋㅋㅋ',
-    },
-  ];
-  window.localStorage.setItem('formList', JSON.stringify(mock));
-  const dataList = JSON.parse(window.localStorage.getItem('formList'));
+  const dataList = useSelector((state) => state.listSlice.data);
+  const dispatch = useDispatch();
+  const click = () => {
+    dispatch(
+      addForm({
+        id: 4,
+        title: '문성자연휴양림',
+        addrees: '충청북도 충주시 노은면 우성1길 191',
+        officeNumber: '032-834-2111',
+        memo: '해위',
+      }),
+    );
+  };
+
   return (
     <StyledFormList>
       {dataList.map((data) => {
@@ -40,6 +31,9 @@ function FormList() {
           </li>
         );
       })}
+      <button onClick={click} type="button">
+        버튼임
+      </button>
     </StyledFormList>
   );
 }
