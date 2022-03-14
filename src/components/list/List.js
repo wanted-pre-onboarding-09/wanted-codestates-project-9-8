@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListCard from './ListCard';
 import Modal from '../modal/Modal';
+import ListHeader from './ListHeader';
 
 function List() {
   const [getData, setGetData] = useState([]);
@@ -28,6 +29,7 @@ function List() {
 
   return (
     <div>
+      <ListHeader />
       {getData.map((item) => (
         <ListCard
           id={item.fcNo}
