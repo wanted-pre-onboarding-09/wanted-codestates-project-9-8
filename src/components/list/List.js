@@ -7,9 +7,10 @@ import ListHeader from './ListHeader';
 
 function List() {
   const [getData, setGetData] = useState([]);
-
   const [isModal, setIsModal] = useState(false);
   const [modalData, setModalData] = useState();
+  const [dataIndex, setDataIndex] = useState(1);
+  const targetRef = useRef(null);
 
   const handleModal = (data) => {
     setIsModal(!isModal);
@@ -20,19 +21,18 @@ function List() {
     setIsModal(false);
   };
 
-  const targetRef = useRef(null);
-  const dateIndex = useRef(10);
   useEffect(async () => {
     const { data } = await axios.get(
-      '/openapi-json/pubdata/pubMapForest.do?numOfRows=50',
+      `/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
     );
-    setGetData(JSON.parse(data).response);
-  }, [getData]);
+
+    setGetData(getData.concat(JSON.parse(data).response));
+  }, [dataIndex]);
 
   const handleIntersect = (entries) => {
     const target = entries[0];
     if (target.isIntersecting && target.intersectionRect.y > 100) {
-      dateIndex.current += 10;
+      setDataIndex((prev) => prev + 1);
     }
   };
 
@@ -47,13 +47,13 @@ function List() {
       observer.observe(targetRef.current);
     }
     return () => observer.disconnect();
-  }, [handleIntersect]);
+  }, []);
 
   return (
     <div>
       <ListHeader />
       <ListContainer>
-        {getData.slice(0, dateIndex.current).map((item, index) => (
+        {getData.map((item, index) => (
           <ListCard
             key={index}
             id={item.fcNo}
@@ -87,5 +87,5 @@ const ListContainer = styled.div`
 `;
 
 const LastBox = styled.div`
-  height: 1px;
+  height: 100px;
 `;
