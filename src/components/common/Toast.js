@@ -27,10 +27,10 @@ function Toast({ type }) {
     }
   }, []);
 
-  //   setTimeout(() => {
-  //     setIsFade(true);
-  //     clearTimeout(setIsFade(true));
-  //   }, 2000);
+  setTimeout(() => {
+    setIsFade(true);
+    clearTimeout(setIsFade(true));
+  }, 2000);
 
   return (
     <StyledToast isFade={isFade} msg={msg}>
@@ -45,7 +45,7 @@ const StyledToast = styled.div`
   background-color: ${({ msg }) =>
     msg.type === 'delete' || msg.type === 'warning' ? 'red' : 'green'};
   color: white;
-  /* opacity: 0; */
+  opacity: 0;
 
   ${({ isFade }) =>
     isFade &&
