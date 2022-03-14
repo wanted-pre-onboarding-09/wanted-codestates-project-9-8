@@ -6,26 +6,21 @@ import List from './components/list/List';
 
 function App() {
   return (
-    <StyledContainer>
-      <StyledWrap>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/list" element={<List />} />
-        </Routes>
-      </StyledWrap>
-    </StyledContainer>
+    <StyledWrap>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/list" element={<List />} />
+      </Routes>
+    </StyledWrap>
   );
 }
 
 export default App;
-
-const StyledContainer = styled.main`
-  padding: 20px 0;
-`;
 
 const StyledWrap = styled.div`
   width: 380px;
   height: auto;
   min-height: 100vh;
   margin: 0 auto;
+  padding: 20px 0;
 `;
