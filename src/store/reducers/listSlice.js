@@ -36,7 +36,6 @@ const listSlice = createSlice({
     },
     createOrUpdateData(state, action) {
       state.data = [...state.data, action.payload];
-      localStorage.clear();
     },
   },
 });
