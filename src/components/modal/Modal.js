@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import ModalButton from './ModalButton';
 
-function Modal({ handleModal }) {
+import { useDispatch } from 'react-redux';
+import ModalButton from './ModalButton';
+import { createOrUpdateData } from '../../store/reducers/listSlice';
+
+function Modal({ data, handleClose }) {
+  const dispatch = useDispatch();
   const [memo, setMemo] = useState();
   const [isNull, setIsNull] = useState(true);
 
@@ -19,25 +23,36 @@ function Modal({ handleModal }) {
 
   const handleBackground = (e) => {
     if (e.target === e.currentTarget) {
-      handleModal();
+      handleClose();
     }
+  };
+
+  const OnCreateOrUpdate = () => {
+    const settingData = {
+      id: data.fcNo,
+      title: data.fcNm,
+      address: data.fcAddr,
+      officeNumber: data.ref1,
+    };
+    const newData = { ...settingData, memo };
+    dispatch(createOrUpdateData(newData));
   };
 
   return (
     <Background onClick={handleBackground}>
       <ModalContainer>
-        <CloseBtn onClick={handleModal}>&times;</CloseBtn>
+        <CloseBtn onClick={handleClose}>&times;</CloseBtn>
         <ModalBox>
           <StyledText color="#797979">이름</StyledText>
-          <StyledText>속리산숲체험휴양마을</StyledText>
+          <StyledText>{data.fcNm}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">주소</StyledText>
-          <StyledText>충청북도 보은군 속리산면 속리산로 596</StyledText>
+          <StyledText>{data.fcAddr}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">연락처</StyledText>
-          <StyledText>043-540-3220</StyledText>
+          <StyledText>{data.ref1}</StyledText>
         </ModalBox>
         <ModalBox>
           <StyledText color="#797979">메모</StyledText>
@@ -64,7 +79,7 @@ function Modal({ handleModal }) {
             text="저장"
             color="#268b63"
             disabled={isNull}
-            handleClick={() => {}}
+            handleClick={OnCreateOrUpdate}
           />
         </ButtonBox>
       </ModalContainer>
@@ -73,7 +88,13 @@ function Modal({ handleModal }) {
 }
 
 Modal.propTypes = {
-  handleModal: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    fcNo: PropTypes.number,
+    fcNm: PropTypes.string,
+    fcAddr: PropTypes.string,
+    ref1: PropTypes.string,
+  }).isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default Modal;
