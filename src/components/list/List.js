@@ -22,8 +22,9 @@ function List() {
   };
 
   useEffect(async () => {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const { data } = await axios.get(
-      `/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
+      `${PROXY}/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
     );
 
     setGetData(getData.concat(JSON.parse(data).response));
