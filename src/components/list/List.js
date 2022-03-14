@@ -32,7 +32,7 @@ function List() {
         <ListCard
           id={item.fcNo}
           name={item.fcNm}
-          addres={item.fcAddr}
+          address={item.fcAddr}
           phone={item.ref1}
           handleModal={() => handleModal(item)}
         />
