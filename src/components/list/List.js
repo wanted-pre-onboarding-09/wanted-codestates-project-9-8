@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import ListCard from './ListCard';
 import Modal from '../modal/Modal';
 
@@ -18,18 +19,40 @@ function List() {
     setIsModal(false);
   };
 
+  const targetRef = useRef(null);
+  const dateIndex = useRef(10);
   useEffect(async () => {
     const { data } = await axios.get(
-      '/openapi-json/pubdata/pubMapForest.do?pageNo=1',
+      '/openapi-json/pubdata/pubMapForest.do?numOfRows=50',
     );
-    setGetData(...getData, JSON.parse(data).response);
-    console.log(getData);
-  }, []);
+    setGetData(JSON.parse(data).response);
+  }, [getData]);
+
+  const handleIntersect = (entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && target.intersectionRect.y > 100) {
+      dateIndex.current += 10;
+    }
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+    const observer = new IntersectionObserver(handleIntersect, options);
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+    return () => observer.disconnect();
+  }, [handleIntersect]);
 
   return (
-    <div>
-      {getData.map((item) => (
+    <ListContainer>
+      {getData.slice(0, dateIndex.current).map((item, index) => (
         <ListCard
+          key={index}
           id={item.fcNo}
           name={item.fcNm}
           address={item.fcAddr}
@@ -38,8 +61,18 @@ function List() {
         />
       ))}
       {isModal && <Modal handleClose={handleClose} data={modalData} />}
-    </div>
+      <LastBox ref={targetRef}>{}</LastBox>
+    </ListContainer>
   );
 }
 
 export default List;
+
+const ListContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
+
+const LastBox = styled.div`
+  height: 1px;
+`;
