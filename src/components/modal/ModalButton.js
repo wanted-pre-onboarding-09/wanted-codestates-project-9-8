@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-function ModalButton({ text, color, disabled, handleClick }) {
+function ModalButton({ text, color, isNull, handleClick }) {
   return (
-    <StyledButton onClick={handleClick} color={color} disabled={disabled}>
+    <StyledButton onClick={handleClick} color={color} isNull={isNull}>
       {text}
     </StyledButton>
   );
@@ -13,7 +13,7 @@ function ModalButton({ text, color, disabled, handleClick }) {
 ModalButton.propTypes = {
   text: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  isNull: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,
 };
 
@@ -26,7 +26,8 @@ const StyledButton = styled.button`
   background-color: ${(props) => props.color};
   color: #fff;
   font-weight: 500;
-  :disabled {
+  opacity: ${(props) => props.isNull && 0.4};
+  /* :disabled {
     opacity: 0.4;
-  }
+  } */
 `;
