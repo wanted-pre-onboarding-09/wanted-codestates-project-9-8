@@ -15,6 +15,7 @@ function List() {
   const [modalData, setModalData] = useState();
   const [dataIndex, setDataIndex] = useState(1);
   const targetRef = useRef(null);
+  axios.defaults.timeout = 10000;
 
   const handleModal = (data) => {
     setIsModal(!isModal);
