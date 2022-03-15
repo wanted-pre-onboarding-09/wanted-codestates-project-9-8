@@ -38,7 +38,7 @@ export default Header;
 const StyledHeaderWrap = styled.div`
   display: flex;
   select {
-    padding: 5px 10px;
+    padding: 5px 20px;
     border: 1px solid #c0c0c0;
     border-radius: 5px;
   }

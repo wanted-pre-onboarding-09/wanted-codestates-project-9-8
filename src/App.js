@@ -2,11 +2,13 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Home from './components/home/Home';
+import Header from './components/common/Header';
 import List from './components/list/List';
 
 function App() {
   return (
     <StyledWrap>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/list" element={<List />} />
