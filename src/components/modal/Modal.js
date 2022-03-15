@@ -10,9 +10,11 @@ import {
   updateData,
 } from '../../store/reducers/listSlice';
 import { onClose } from '../../store/reducers/modalSlice';
+import { onToast } from '../../store/reducers/toastSlice';
 
-function Modal({ mode, isToast, handleToast }) {
+function Modal({ mode }) {
   const { selectedData } = useSelector((state) => state.modalSlice);
+  const { isToast } = useSelector((state) => state.toastSlice);
   const { id, title, address, officeNumber, memo } = selectedData;
   const dispatch = useDispatch();
   const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
@@ -40,7 +42,7 @@ function Modal({ mode, isToast, handleToast }) {
 
   const onCreate = () => {
     if (isNull) {
-      handleToast('warning');
+      dispatch(onToast('warning'));
       return;
     }
     const settingData = {
@@ -52,23 +54,23 @@ function Modal({ mode, isToast, handleToast }) {
     const newData = { ...settingData, memo: textarea };
     dispatch(createData(newData));
     handleClose();
-    handleToast('add');
+    dispatch(onToast('add'));
   };
 
   const onUpdate = (dataId) => {
     if (isNull) {
-      handleToast('warning');
+      dispatch(onToast('warning'));
       return;
     }
     dispatch(updateData({ id: dataId, memo: textarea }));
     handleClose();
-    handleToast('change');
+    dispatch(onToast('change'));
   };
 
   const onDelete = (dataId) => {
     dispatch(deleteData(dataId));
     handleClose();
-    handleToast('delete');
+    dispatch(onToast('delete'));
   };
 
   return (
@@ -127,18 +129,7 @@ function Modal({ mode, isToast, handleToast }) {
 }
 
 Modal.propTypes = {
-  isToast: PropTypes.shape({
-    add: PropTypes.bool,
-    warning: PropTypes.bool,
-    change: PropTypes.bool,
-    delete: PropTypes.bool,
-  }),
   mode: PropTypes.string.isRequired,
-  handleToast: PropTypes.func.isRequired,
-};
-
-Modal.defaultProps = {
-  isToast: { add: false, warning: false, change: false, delete: false },
 };
 
 export default Modal;

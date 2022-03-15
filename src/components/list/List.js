@@ -8,12 +8,13 @@ import ListHeader from './ListHeader';
 import Toast from '../common/Toast';
 import Loading from '../common/Loading';
 import { onModal } from '../../store/reducers/modalSlice';
+import { onReset } from '../../store/reducers/toastSlice';
 
 function List() {
   const dispatch = useDispatch();
   const [getData, setGetData] = useState([]);
   const { isModal } = useSelector((state) => state.modalSlice);
-  const [isToast, setIsToast] = useState({ add: false, warning: false });
+  const { isToast } = useSelector((state) => state.toastSlice);
   const [checkError, setCheckError] = useState(true);
   const [dataIndex, setDataIndex] = useState(1);
   const targetRef = useRef(null);
@@ -29,10 +30,6 @@ function List() {
     dispatch(onModal(modalData));
   };
 
-  const handleToast = (type) => {
-    setIsToast({ ...isToast, [type]: !isToast.type });
-  };
-
   useEffect(() => {
     window.onbeforeunload = function pushRefresh() {
       window.scrollTo(0, 0);
@@ -44,7 +41,7 @@ function List() {
       return;
     }
     const timer = setTimeout(() => {
-      setIsToast({ add: false, warning: false });
+      dispatch(onReset());
     }, 2000);
     return () => {
       clearTimeout(timer);
@@ -104,9 +101,7 @@ function List() {
           ))
         )}
 
-        {isModal && (
-          <Modal isToast={isToast} handleToast={handleToast} mode="create" />
-        )}
+        {isModal && <Modal mode="create" />}
         <LastBox hide={dataIndex} getData={getData.length} ref={targetRef}>
           ...
         </LastBox>

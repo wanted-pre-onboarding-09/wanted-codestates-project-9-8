@@ -5,21 +5,14 @@ import Pagination from '../common/Pagination';
 import Modal from '../modal/Modal';
 import Toast from '../common/Toast';
 import { onModal } from '../../store/reducers/modalSlice';
+import { onReset } from '../../store/reducers/toastSlice';
 
 function FormList() {
   const dispatch = useDispatch();
   const dataList = useSelector((state) => state.listSlice.data);
   const { selected, keyword } = useSelector((state) => state.filterSlice);
   const { isModal } = useSelector((state) => state.modalSlice);
-  const [isToast, setIsToast] = useState({
-    change: false,
-    delete: false,
-    warning: false,
-  });
-
-  const handleToast = (type) => {
-    setIsToast({ ...isToast, [type]: !isToast.type });
-  };
+  const { isToast } = useSelector((state) => state.toastSlice);
 
   useEffect(() => {
     if (
@@ -30,7 +23,7 @@ function FormList() {
       return;
     }
     const timer = setTimeout(() => {
-      setIsToast({ change: false, delete: false, warning: false });
+      dispatch(onReset());
     }, 2000);
     return () => {
       clearTimeout(timer);
@@ -77,9 +70,7 @@ function FormList() {
       ) : (
         <StyledNotData>저장된 휴양림 데이터가 없습니다.</StyledNotData>
       )}
-      {isModal && (
-        <Modal isToast={isToast} handleToast={handleToast} mode="edit" />
-      )}
+      {isModal && <Modal isToast={isToast} mode="edit" />}
     </StyledFormList>
   );
 }
