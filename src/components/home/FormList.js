@@ -23,7 +23,6 @@ function FormList() {
   const [page, setPage] = useState(1);
   const limit = 4;
   const offset = (page - 1) * limit;
-
   return (
     <StyledFormList>
       {dataList.filter((data) => data[selected].includes(keyword)).length ? (
@@ -95,13 +94,14 @@ const StyledFormList = styled.ul`
     margin-top: 0;
   }
   .title {
-    color: green;
+    color: #268b63;
     font-weight: bold;
     font-size: 24px;
   }
   .address {
   }
   .officeNumber {
-    color: red;
+    color: #ff6666;
+    font-weight: bold;
   }
 `;
