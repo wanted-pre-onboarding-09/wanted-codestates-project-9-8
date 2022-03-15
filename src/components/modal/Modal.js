@@ -3,13 +3,24 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import ModalButton from './ModalButton';
+import Toast from '../common/Toast';
 import {
   createData,
   deleteData,
   updateData,
 } from '../../store/reducers/listSlice';
 
-function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
+function Modal({
+  id,
+  title,
+  address,
+  officeNumber,
+  memo,
+  mode,
+  isToast,
+  handleClose,
+  handleToast,
+}) {
   const dispatch = useDispatch();
   const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
   const [isNull, setIsNull] = useState(mode !== 'edit');
@@ -31,6 +42,10 @@ function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
   };
 
   const onCreate = () => {
+    if (isNull) {
+      handleToast('warning');
+      return;
+    }
     const settingData = {
       id: Date.now(),
       title,
@@ -39,18 +54,29 @@ function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
     };
     const newData = { ...settingData, memo: textarea };
     dispatch(createData(newData));
+    handleClose();
+    handleToast('add');
   };
 
   const onUpdate = (dataId) => {
+    if (isNull) {
+      handleToast('warning');
+      return;
+    }
     dispatch(updateData({ id: dataId, memo: textarea }));
+    handleClose();
+    handleToast('change');
   };
 
   const onDelete = (dataId) => {
     dispatch(deleteData(dataId));
+    handleClose();
+    handleToast('delete');
   };
 
   return (
     <Background onClick={handleBackground}>
+      {isToast.warning && <Toast type="warning" />}
       <ModalContainer>
         <CloseBtn onClick={handleClose}>&times;</CloseBtn>
         <ModalBox>
@@ -79,13 +105,13 @@ function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
               <ModalButton
                 text="삭제"
                 color="#ea3333"
-                disabled={isNull}
+                isNull={isNull}
                 handleClick={() => onDelete(id)}
               />
               <ModalButton
                 text="수정"
                 color="#268b63"
-                disabled={isNull}
+                isNull={isNull}
                 handleClick={() => onUpdate(id)}
               />
             </>
@@ -93,7 +119,7 @@ function Modal({ id, title, address, officeNumber, memo, mode, handleClose }) {
             <ModalButton
               text="저장"
               color="#268b63"
-              disabled={isNull}
+              isNull={isNull}
               handleClick={onCreate}
             />
           )}
@@ -109,12 +135,20 @@ Modal.propTypes = {
   address: PropTypes.string.isRequired,
   officeNumber: PropTypes.string.isRequired,
   memo: PropTypes.string,
+  isToast: PropTypes.shape({
+    add: PropTypes.bool,
+    warning: PropTypes.bool,
+    change: PropTypes.bool,
+    delete: PropTypes.bool,
+  }),
   mode: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleToast: PropTypes.func.isRequired,
 };
 
 Modal.defaultProps = {
   memo: '',
+  isToast: { add: false, warning: false, change: false, delete: false },
 };
 
 export default Modal;
