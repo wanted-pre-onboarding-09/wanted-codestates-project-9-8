@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ModalButton from './ModalButton';
 import Toast from '../common/Toast';
 import {
@@ -9,21 +9,18 @@ import {
   deleteData,
   updateData,
 } from '../../store/reducers/listSlice';
+import { onClose } from '../../store/reducers/modalSlice';
 
-function Modal({
-  id,
-  title,
-  address,
-  officeNumber,
-  memo,
-  mode,
-  isToast,
-  handleClose,
-  handleToast,
-}) {
+function Modal({ mode, isToast, handleToast }) {
+  const { selectedData } = useSelector((state) => state.modalSlice);
+  const { id, title, address, officeNumber, memo } = selectedData;
   const dispatch = useDispatch();
   const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
   const [isNull, setIsNull] = useState(mode !== 'edit');
+
+  const handleClose = () => {
+    dispatch(onClose());
+  };
 
   const handleMemo = (e) => {
     const { value } = e.target;
@@ -130,11 +127,6 @@ function Modal({
 }
 
 Modal.propTypes = {
-  id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  officeNumber: PropTypes.string.isRequired,
-  memo: PropTypes.string,
   isToast: PropTypes.shape({
     add: PropTypes.bool,
     warning: PropTypes.bool,
@@ -142,12 +134,10 @@ Modal.propTypes = {
     delete: PropTypes.bool,
   }),
   mode: PropTypes.string.isRequired,
-  handleClose: PropTypes.func.isRequired,
   handleToast: PropTypes.func.isRequired,
 };
 
 Modal.defaultProps = {
-  memo: '',
   isToast: { add: false, warning: false, change: false, delete: false },
 };
 

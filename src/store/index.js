@@ -11,16 +11,18 @@ import {
 import storage from 'redux-persist/lib/storage';
 import listSlice from './reducers/listSlice';
 import filterSlice from './reducers/filterSlice';
+import modalSlice from './reducers/modalSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['filterSlice'],
+  blacklist: ['filterSlice', 'modalSlice'],
 };
 
 const rootReducer = combineReducers({
   listSlice,
   filterSlice,
+  modalSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

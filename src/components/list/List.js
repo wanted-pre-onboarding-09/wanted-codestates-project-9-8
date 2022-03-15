@@ -1,29 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import ListCard from './ListCard';
 import Modal from '../modal/Modal';
 import ListHeader from './ListHeader';
 import Toast from '../common/Toast';
 import Loading from '../common/Loading';
+import { onModal } from '../../store/reducers/modalSlice';
 
 function List() {
+  const dispatch = useDispatch();
   const [getData, setGetData] = useState([]);
-  const [isModal, setIsModal] = useState(false);
+  const { isModal } = useSelector((state) => state.modalSlice);
   const [isToast, setIsToast] = useState({ add: false, warning: false });
   const [checkError, setCheckError] = useState(true);
-  const [modalData, setModalData] = useState();
   const [dataIndex, setDataIndex] = useState(1);
   const targetRef = useRef(null);
   axios.defaults.timeout = 10000;
 
   const handleModal = (data) => {
-    setIsModal(!isModal);
-    setModalData(data);
-  };
-
-  const handleClose = () => {
-    setIsModal(false);
+    const modalData = {
+      id: data.fcNo,
+      title: data.fcNm,
+      address: data.fcAddr,
+      officeNumber: data.ref1,
+    };
+    dispatch(onModal(modalData));
   };
 
   const handleToast = (type) => {
@@ -102,16 +105,7 @@ function List() {
         )}
 
         {isModal && (
-          <Modal
-            id={modalData.fcNo}
-            title={modalData.fcNm}
-            address={modalData.fcAddr}
-            officeNumber={modalData.ref1}
-            isToast={isToast}
-            handleClose={handleClose}
-            handleToast={handleToast}
-            mode="create"
-          />
+          <Modal isToast={isToast} handleToast={handleToast} mode="create" />
         )}
         <LastBox hide={dataIndex} getData={getData.length} ref={targetRef}>
           ...
