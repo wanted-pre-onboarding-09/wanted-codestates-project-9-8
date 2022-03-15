@@ -18,6 +18,7 @@ const StyledHeader = styled.p`
   font-size: 30px;
   margin-bottom: 20px;
   cursor: pointer;
+  text-align: center;
   a {
     color: #268b63;
   }
