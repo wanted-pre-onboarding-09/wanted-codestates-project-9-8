@@ -2,14 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const listCard = ({ id, name, address, phone, handleModal }) => {
-  // const modal = (event) => {
-  //   console.log(event.target.id);
-  // };
-
   return (
     <CardBox id={id} onClick={handleModal}>
       <ul>
-        <li>{name}</li>
+        <li>{!name ? '데이터를 불러올 수 없습니다.' : name}</li>
         <li>{address}</li>
         <li>{phone}</li>
       </ul>
