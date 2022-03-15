@@ -2,10 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const listCard = ({ id, name, address, phone, handleModal }) => {
-  // const modal = (event) => {
-  //   console.log(event.target.id);
-  // };
-
   return (
     <CardBox id={id} onClick={handleModal}>
       <ul>

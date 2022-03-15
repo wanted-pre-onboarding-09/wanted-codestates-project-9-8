@@ -5,6 +5,7 @@ import ListCard from './ListCard';
 import Modal from '../modal/Modal';
 import ListHeader from './ListHeader';
 import Toast from '../common/Toast';
+import Loading from '../common/Loading';
 
 function List() {
   const [getData, setGetData] = useState([]);
@@ -26,7 +27,11 @@ function List() {
   const handleToast = (type) => {
     setIsToast({ ...isToast, [type]: !isToast.type });
   };
-
+  useEffect(() => {
+    window.onbeforeunload = function pushRefresh() {
+      window.scrollTo(0, 0);
+    };
+  }, []);
   useEffect(() => {
     if (isToast.add || isToast.warning) {
       const timer = setTimeout(() => {
@@ -40,17 +45,21 @@ function List() {
 
   // console.log(isToast);
   useEffect(async () => {
-    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-    const { data } = await axios.get(
-      `${PROXY}/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
-    );
-
-    setGetData(getData.concat(JSON.parse(data).response));
+    try {
+      const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+      const { data } = await axios.get(
+        `${PROXY}/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
+      );
+      setGetData(getData.concat(JSON.parse(data).response));
+    } catch {
+      alert('데이터를 불러올 수 없습니다.');
+    }
   }, [dataIndex]);
 
   const handleIntersect = (entries) => {
     const target = entries[0];
     if (target.isIntersecting && target.intersectionRect.y > 100) {
+      console.log('hi');
       setDataIndex((prev) => prev + 1);
     }
   };
@@ -73,16 +82,20 @@ function List() {
       <ListHeader />
       <ListContainer>
         {isToast.add && <Toast type="add" />}
-        {getData.map((item, index) => (
-          <ListCard
-            key={index}
-            id={item.fcNo}
-            name={item.fcNm}
-            address={item.fcAddr}
-            phone={item.ref1}
-            handleModal={() => handleModal(item)}
-          />
-        ))}
+        {getData.length === 0 ? (
+          <Loading />
+        ) : (
+          getData.map((item, index) => (
+            <ListCard
+              key={index}
+              id={item.fcNo}
+              name={item.fcNm}
+              address={item.fcAddr}
+              phone={item.ref1}
+              handleModal={() => handleModal(item)}
+            />
+          ))
+        )}
         {isModal && (
           <Modal
             id={modalData.fcNo}
@@ -95,7 +108,9 @@ function List() {
             mode="create"
           />
         )}
-        <LastBox ref={targetRef}>{}</LastBox>
+        <LastBox hide={dataIndex} ref={targetRef}>
+          ...
+        </LastBox>
       </ListContainer>
     </div>
   );
@@ -109,5 +124,14 @@ const ListContainer = styled.div`
 `;
 
 const LastBox = styled.div`
-  height: 20px;
+  display: ${({ hide }) => {
+    return hide > 4 ? 'none' : 'block';
+  }};
+  margin: 20px auto;
+  padding: 0px 30px 20px 30px;
+  width: 100%;
+  border: none;
+  color: #268b63;
+  font-size: 40px;
+  text-align: center;
 `;
