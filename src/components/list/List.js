@@ -11,6 +11,7 @@ function List() {
   const [getData, setGetData] = useState([]);
   const [isModal, setIsModal] = useState(false);
   const [isToast, setIsToast] = useState({ add: false, warning: false });
+  const [checkError, setCheckError] = useState(true);
   const [modalData, setModalData] = useState();
   const [dataIndex, setDataIndex] = useState(1);
   const targetRef = useRef(null);
@@ -27,11 +28,13 @@ function List() {
   const handleToast = (type) => {
     setIsToast({ ...isToast, [type]: !isToast.type });
   };
+
   useEffect(() => {
     window.onbeforeunload = function pushRefresh() {
       window.scrollTo(0, 0);
     };
   }, []);
+
   useEffect(() => {
     if (isToast.add || isToast.warning) {
       const timer = setTimeout(() => {
@@ -52,7 +55,7 @@ function List() {
       );
       setGetData(getData.concat(JSON.parse(data).response));
     } catch {
-      alert('데이터를 불러올 수 없습니다.');
+      setCheckError(!checkError);
     }
   }, [dataIndex]);
 
@@ -79,7 +82,8 @@ function List() {
   return (
     <div>
       <ListHeader />
-      <ListContainer>
+      {!checkError ? <ListCard /> : null}
+      <ListContainer checkError={checkError}>
         {isToast.add && <Toast type="add" />}
         {getData.length === 0 ? (
           <Loading />
@@ -95,6 +99,7 @@ function List() {
             />
           ))
         )}
+
         {isModal && (
           <Modal
             id={modalData.fcNo}
@@ -107,7 +112,7 @@ function List() {
             mode="create"
           />
         )}
-        <LastBox hide={dataIndex} ref={targetRef}>
+        <LastBox hide={dataIndex} getData={getData.length} ref={targetRef}>
           ...
         </LastBox>
       </ListContainer>
@@ -120,11 +125,14 @@ export default List;
 const ListContainer = styled.div`
   width: 100%;
   height: 100vh;
+  display: ${({ checkError }) => {
+    return !checkError ? 'none' : 'block';
+  }};
 `;
 
 const LastBox = styled.div`
-  display: ${({ hide }) => {
-    return hide > 4 ? 'none' : 'block';
+  display: ${({ hide, getData }) => {
+    return hide > 4 || getData === 0 ? 'none' : 'block';
   }};
   margin: 20px auto;
   padding: 0px 30px 20px 30px;
