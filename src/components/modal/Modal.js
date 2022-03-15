@@ -209,6 +209,7 @@ const StyledInput = styled.textarea`
   border-radius: 4px;
   margin: 4px 0;
   padding: 4px;
+  resize: none;
   :focus {
     outline: none;
     border: 1px solid #000;
