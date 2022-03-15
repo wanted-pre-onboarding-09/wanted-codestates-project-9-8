@@ -45,6 +45,9 @@ function Toast({ type }) {
   );
 }
 const StyledToast = styled.div`
+  position: absolute;
+  top: 30px;
+  left: 50%;
   padding: 0.7rem 1rem;
   width: fit-content;
   border-radius: 0.8rem;

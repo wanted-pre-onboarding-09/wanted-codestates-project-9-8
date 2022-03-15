@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import Pagination from '../common/Pagination';
 import Modal from '../modal/Modal';
+import Toast from '../common/Toast';
 
 function FormList() {
   const dataList = useSelector((state) => state.listSlice.data);
   const { selected, keyword } = useSelector((state) => state.filterSlice);
 
   const [isModal, setIsModal] = useState(false);
+  const [isToast, setIsToast] = useState({
+    change: false,
+    delete: false,
+    warning: false,
+  });
   const [modalData, setModalData] = useState();
 
   const handleModal = (data) => {
@@ -20,11 +26,28 @@ function FormList() {
     setIsModal(false);
   };
 
+  const handleToast = (type) => {
+    setIsToast({ ...isToast, [type]: !isToast.type });
+  };
+
+  useEffect(() => {
+    if (isToast.change || isToast.delete || isToast.warning) {
+      const timer = setTimeout(() => {
+        setIsToast({ change: false, delete: false, warning: false });
+      }, 1000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [isToast.change, isToast.delete, isToast.warning]);
+
   const [page, setPage] = useState(1);
   const limit = 4;
   const offset = (page - 1) * limit;
   return (
     <StyledFormList>
+      {isToast.change && <Toast type="change" />}
+      {isToast.delete && <Toast type="delete" />}
       {dataList.filter((data) => data[selected].includes(keyword)).length ? (
         <>
           {dataList
@@ -65,7 +88,9 @@ function FormList() {
           address={modalData.address}
           officeNumber={modalData.officeNumber}
           memo={modalData.memo}
+          isToast={isToast}
           handleClose={handleClose}
+          handleToast={handleToast}
           mode="edit"
         />
       )}

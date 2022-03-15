@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import ListCard from './ListCard';
 import Modal from '../modal/Modal';
 import ListHeader from './ListHeader';
+import Toast from '../common/Toast';
 
 function List() {
   const [getData, setGetData] = useState([]);
   const [isModal, setIsModal] = useState(false);
+  const [isToast, setIsToast] = useState({ add: false, warning: false });
   const [modalData, setModalData] = useState();
   const [dataIndex, setDataIndex] = useState(1);
   const targetRef = useRef(null);
@@ -21,6 +23,22 @@ function List() {
     setIsModal(false);
   };
 
+  const handleToast = (type) => {
+    setIsToast({ ...isToast, [type]: !isToast.type });
+  };
+
+  useEffect(() => {
+    if (isToast.add || isToast.warning) {
+      const timer = setTimeout(() => {
+        setIsToast({ add: false, warning: false });
+      }, 1000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [isToast.add, isToast.warning]);
+
+  // console.log(isToast);
   useEffect(async () => {
     const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const { data } = await axios.get(
@@ -54,6 +72,7 @@ function List() {
     <div>
       <ListHeader />
       <ListContainer>
+        {isToast.add && <Toast type="add" />}
         {getData.map((item, index) => (
           <ListCard
             key={index}
@@ -70,7 +89,9 @@ function List() {
             title={modalData.fcNm}
             address={modalData.fcAddr}
             officeNumber={modalData.ref1}
+            isToast={isToast}
             handleClose={handleClose}
+            handleToast={handleToast}
             mode="create"
           />
         )}
