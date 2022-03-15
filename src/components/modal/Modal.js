@@ -209,6 +209,7 @@ const StyledInput = styled.textarea`
   border-radius: 4px;
   margin: 4px 0;
   padding: 4px;
+  resize: none;
   :focus {
     outline: none;
     border: 1px solid #000;
@@ -219,15 +220,3 @@ const ButtonBox = styled.div`
   display: flex;
   column-gap: 10px;
 `;
-
-// const [isModal, setIsModal] = useState(false);
-
-// const handleModal = () => {
-//   setIsModal(!isModal);
-// };
-// <button type="button" onClick={handleModal}>
-//   modall
-// </button>;
-// {
-//   isModal && <Modal handleModal={handleModal} />;
-// }
