@@ -31,14 +31,19 @@ function FormList() {
   };
 
   useEffect(() => {
-    if (isToast.change || isToast.delete || isToast.warning) {
-      const timer = setTimeout(() => {
-        setIsToast({ change: false, delete: false, warning: false });
-      }, 1000);
-      return () => {
-        clearTimeout(timer);
-      };
+    if (
+      isToast.change === false &&
+      isToast.delete === false &&
+      isToast.warning === false
+    ) {
+      return;
     }
+    const timer = setTimeout(() => {
+      setIsToast({ change: false, delete: false, warning: false });
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [isToast.change, isToast.delete, isToast.warning]);
 
   const [page, setPage] = useState(1);
@@ -46,8 +51,8 @@ function FormList() {
   const offset = (page - 1) * limit;
   return (
     <StyledFormList>
-      {isToast.change && <Toast type="change" />}
-      {isToast.delete && <Toast type="delete" />}
+      {isToast.change && <Toast type="change" isFade={isToast.change} />}
+      {isToast.delete && <Toast type="delete" isFade={isToast.delete} />}
       {dataList.filter((data) => data[selected].includes(keyword)).length ? (
         <>
           {dataList
