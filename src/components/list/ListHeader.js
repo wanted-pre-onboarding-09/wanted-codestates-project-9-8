@@ -22,7 +22,7 @@ const StyeldHeader = styled.header`
     transition: all 200ms ease;
 
     &:hover {
-      color: green;
+      color: #268b63;
     }
   }
 `;
