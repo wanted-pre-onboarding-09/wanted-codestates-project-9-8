@@ -88,5 +88,5 @@ const ListContainer = styled.div`
 `;
 
 const LastBox = styled.div`
-  height: 100px;
+  height: 20px;
 `;
