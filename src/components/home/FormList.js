@@ -1,34 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../common/Pagination';
 import Modal from '../modal/Modal';
 import Toast from '../common/Toast';
+import { onModal } from '../../store/reducers/modalSlice';
+import { onReset } from '../../store/reducers/toastSlice';
 
 function FormList() {
+  const dispatch = useDispatch();
   const dataList = useSelector((state) => state.listSlice.data);
   const { selected, keyword } = useSelector((state) => state.filterSlice);
-
-  const [isModal, setIsModal] = useState(false);
-  const [isToast, setIsToast] = useState({
-    change: false,
-    delete: false,
-    warning: false,
-  });
-  const [modalData, setModalData] = useState();
-
-  const handleModal = (data) => {
-    setIsModal(!isModal);
-    setModalData(data);
-  };
-
-  const handleClose = () => {
-    setIsModal(false);
-  };
-
-  const handleToast = (type) => {
-    setIsToast({ ...isToast, [type]: !isToast.type });
-  };
+  const { isModal } = useSelector((state) => state.modalSlice);
+  const { isToast } = useSelector((state) => state.toastSlice);
 
   useEffect(() => {
     if (
@@ -39,7 +23,7 @@ function FormList() {
       return;
     }
     const timer = setTimeout(() => {
-      setIsToast({ change: false, delete: false, warning: false });
+      dispatch(onReset());
     }, 2000);
     return () => {
       clearTimeout(timer);
@@ -63,8 +47,8 @@ function FormList() {
               return (
                 <li
                   key={id}
-                  onClick={() => handleModal(data)}
-                  onKeyDown={() => handleModal(data)}
+                  onClick={() => dispatch(onModal(data))}
+                  onKeyDown={() => dispatch(onModal(data))}
                   role="presentation"
                 >
                   <p className="title">{title}</p>
@@ -86,19 +70,7 @@ function FormList() {
       ) : (
         <StyledNotData>저장된 휴양림 데이터가 없습니다.</StyledNotData>
       )}
-      {isModal && (
-        <Modal
-          id={modalData.id}
-          title={modalData.title}
-          address={modalData.address}
-          officeNumber={modalData.officeNumber}
-          memo={modalData.memo}
-          isToast={isToast}
-          handleClose={handleClose}
-          handleToast={handleToast}
-          mode="edit"
-        />
-      )}
+      {isModal && <Modal isToast={isToast} mode="edit" />}
     </StyledFormList>
   );
 }

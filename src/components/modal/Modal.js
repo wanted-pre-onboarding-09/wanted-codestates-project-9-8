@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ModalButton from './ModalButton';
 import Toast from '../common/Toast';
 import {
@@ -9,21 +9,28 @@ import {
   deleteData,
   updateData,
 } from '../../store/reducers/listSlice';
+import { onClose } from '../../store/reducers/modalSlice';
+import { onToast } from '../../store/reducers/toastSlice';
 
-function Modal({
-  id,
-  title,
-  address,
-  officeNumber,
-  memo,
-  mode,
-  isToast,
-  handleClose,
-  handleToast,
-}) {
+function Modal({ mode }) {
   const dispatch = useDispatch();
+
+  const { selectedData } = useSelector((state) => state.modalSlice);
+  const { id, title, address, officeNumber, memo } = selectedData;
+  const { isToast } = useSelector((state) => state.toastSlice);
+
   const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
   const [isNull, setIsNull] = useState(mode !== 'edit');
+
+  const handleClose = () => {
+    dispatch(onClose());
+  };
+
+  const handleBackground = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
 
   const handleMemo = (e) => {
     const { value } = e.target;
@@ -35,15 +42,9 @@ function Modal({
     }
   };
 
-  const handleBackground = (e) => {
-    if (e.target === e.currentTarget) {
-      handleClose();
-    }
-  };
-
   const onCreate = () => {
     if (isNull) {
-      handleToast('warning');
+      dispatch(onToast('warning'));
       return;
     }
     const settingData = {
@@ -55,23 +56,23 @@ function Modal({
     const newData = { ...settingData, memo: textarea };
     dispatch(createData(newData));
     handleClose();
-    handleToast('add');
+    dispatch(onToast('add'));
   };
 
   const onUpdate = (dataId) => {
     if (isNull) {
-      handleToast('warning');
+      dispatch(onToast('warning'));
       return;
     }
     dispatch(updateData({ id: dataId, memo: textarea }));
     handleClose();
-    handleToast('change');
+    dispatch(onToast('change'));
   };
 
   const onDelete = (dataId) => {
     dispatch(deleteData(dataId));
     handleClose();
-    handleToast('delete');
+    dispatch(onToast('delete'));
   };
 
   return (
@@ -130,25 +131,7 @@ function Modal({
 }
 
 Modal.propTypes = {
-  id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  officeNumber: PropTypes.string.isRequired,
-  memo: PropTypes.string,
-  isToast: PropTypes.shape({
-    add: PropTypes.bool,
-    warning: PropTypes.bool,
-    change: PropTypes.bool,
-    delete: PropTypes.bool,
-  }),
   mode: PropTypes.string.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  handleToast: PropTypes.func.isRequired,
-};
-
-Modal.defaultProps = {
-  memo: '',
-  isToast: { add: false, warning: false, change: false, delete: false },
 };
 
 export default Modal;
