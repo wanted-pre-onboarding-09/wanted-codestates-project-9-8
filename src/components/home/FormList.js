@@ -84,7 +84,7 @@ function FormList() {
           />
         </>
       ) : (
-        <p>데이터가 없습니다.</p>
+        <StyledNotData>저장된 휴양림 데이터가 없습니다.</StyledNotData>
       )}
       {isModal && (
         <Modal
@@ -117,12 +117,12 @@ const StyledFormList = styled.ul`
       box-shadow: 3px 3px 3px #c0c0c0;
     }
   }
-  p {
+  p + p {
     margin-top: 5px;
   }
-  p:first-child {
-    margin-top: 0;
-  }
+  // p:first-child {
+  //   margin-top: 0;
+  // }
   .title {
     color: #268b63;
     font-weight: bold;
@@ -134,4 +134,17 @@ const StyledFormList = styled.ul`
     color: #ff6666;
     font-weight: bold;
   }
+  .not-data {
+    margin: 30px 0;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+  }
+`;
+
+const StyledNotData = styled.p`
+  margin: 30px 0;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
 `;

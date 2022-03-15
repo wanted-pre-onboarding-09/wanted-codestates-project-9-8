@@ -32,7 +32,7 @@ function Toast({ type, isFade }) {
   );
 }
 const StyledToast = styled.div`
-  position: absolute;
+  position: fixed;
   top: 30px;
   left: 50%;
   padding: 0.7rem 1rem;
