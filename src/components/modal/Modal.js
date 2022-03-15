@@ -220,15 +220,3 @@ const ButtonBox = styled.div`
   display: flex;
   column-gap: 10px;
 `;
-
-// const [isModal, setIsModal] = useState(false);
-
-// const handleModal = () => {
-//   setIsModal(!isModal);
-// };
-// <button type="button" onClick={handleModal}>
-//   modall
-// </button>;
-// {
-//   isModal && <Modal handleModal={handleModal} />;
-// }
