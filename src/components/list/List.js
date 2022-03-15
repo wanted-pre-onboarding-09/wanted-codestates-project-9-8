@@ -36,17 +36,17 @@ function List() {
   }, []);
 
   useEffect(() => {
-    if (isToast.add || isToast.warning) {
-      const timer = setTimeout(() => {
-        setIsToast({ add: false, warning: false });
-      }, 1000);
-      return () => {
-        clearTimeout(timer);
-      };
+    if (isToast.add === false && isToast.warning === false) {
+      return;
     }
+    const timer = setTimeout(() => {
+      setIsToast({ add: false, warning: false });
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [isToast.add, isToast.warning]);
 
-  // console.log(isToast);
   useEffect(async () => {
     try {
       const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
@@ -84,7 +84,7 @@ function List() {
       <ListHeader />
       {!checkError ? <ListCard /> : null}
       <ListContainer checkError={checkError}>
-        {isToast.add && <Toast type="add" />}
+        {isToast.add && <Toast type="add" isFade={isToast.add} />}
         {getData.length === 0 ? (
           <Loading />
         ) : (

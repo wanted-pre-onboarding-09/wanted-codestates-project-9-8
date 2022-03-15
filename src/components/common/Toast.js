@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
-function Toast({ type }) {
-  const [isFade, setIsFade] = useState(false);
+function Toast({ type, isFade }) {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -24,18 +23,6 @@ function Toast({ type }) {
       default:
         throw new Error(`unknown Toast type:${type}`);
     }
-  }, []);
-
-  const handleFade = () => {
-    setIsFade(true);
-  };
-
-  setTimeout(() => {
-    handleFade();
-  }, 2000);
-
-  useEffect(() => {
-    clearTimeout(setIsFade(true));
   }, []);
 
   return (
@@ -81,5 +68,6 @@ const StyledToast = styled.div`
 
 Toast.propTypes = {
   type: PropTypes.string.isRequired,
+  isFade: PropTypes.bool.isRequired,
 };
 export default Toast;
