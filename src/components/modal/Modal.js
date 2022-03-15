@@ -13,15 +13,23 @@ import { onClose } from '../../store/reducers/modalSlice';
 import { onToast } from '../../store/reducers/toastSlice';
 
 function Modal({ mode }) {
-  const { selectedData } = useSelector((state) => state.modalSlice);
-  const { isToast } = useSelector((state) => state.toastSlice);
-  const { id, title, address, officeNumber, memo } = selectedData;
   const dispatch = useDispatch();
+
+  const { selectedData } = useSelector((state) => state.modalSlice);
+  const { id, title, address, officeNumber, memo } = selectedData;
+  const { isToast } = useSelector((state) => state.toastSlice);
+
   const [textarea, setTextarea] = useState(mode === 'edit' ? memo : '');
   const [isNull, setIsNull] = useState(mode !== 'edit');
 
   const handleClose = () => {
     dispatch(onClose());
+  };
+
+  const handleBackground = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
   };
 
   const handleMemo = (e) => {
@@ -31,12 +39,6 @@ function Modal({ mode }) {
       setIsNull(true);
     } else {
       setIsNull(false);
-    }
-  };
-
-  const handleBackground = (e) => {
-    if (e.target === e.currentTarget) {
-      handleClose();
     }
   };
 
