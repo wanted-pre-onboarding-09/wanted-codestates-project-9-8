@@ -52,7 +52,7 @@ const StyledToast = styled.div`
   width: fit-content;
   border-radius: 0.8rem;
   background-color: ${({ msg }) =>
-    msg.type === 'delete' || msg.type === 'warning' ? 'red' : 'green'};
+    msg.type === 'delete' || msg.type === 'warning' ? '#ea3333' : '#268b63'};
   color: white;
   opacity: 0;
 

@@ -62,7 +62,7 @@ const StyledPageButton = styled.button`
   font-size: 16px;
   &.active {
     font-weight: bold;
-    color: rgb(250, 70, 70);
+    color: #ff6666;
   }
 `;
 
