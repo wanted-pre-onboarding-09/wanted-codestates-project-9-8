@@ -59,7 +59,6 @@ function List() {
   const handleIntersect = (entries) => {
     const target = entries[0];
     if (target.isIntersecting && target.intersectionRect.y > 100) {
-      console.log('hi');
       setDataIndex((prev) => prev + 1);
     }
   };
