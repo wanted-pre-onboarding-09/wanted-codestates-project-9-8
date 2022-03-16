@@ -54,6 +54,13 @@
 ### 유송현
 
 ### 서한석
+- Skeleton UI Loading Component([구현방법 블로그 보러가기](https://jobcoding.tistory.com/214))
+    - linear-gradient와 keyframes로 First Loading은 background-position, Second Loading은 background-image를 변화시켜 로딩 효과 구현 <br>
+    
+      |First Loading|Second Loading|
+      |:-:|:-:|
+      |<img src="https://user-images.githubusercontent.com/87353284/158618174-61afc828-fd8e-4cf9-941c-f3f2678f23a2.gif" width="30%">|<img src="https://user-images.githubusercontent.com/87353284/158629672-358ac06d-385d-40f1-8beb-58aa299c462e.gif" width="30%">|
+      
 
 ### 윤솔비
 - Modal의 외부 화면을 클릭 시 Modal이 닫히도록 구현했습니다.
