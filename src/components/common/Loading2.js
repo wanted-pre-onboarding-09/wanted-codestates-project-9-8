@@ -11,26 +11,18 @@ const LoadingContainer = styled.div`
 .skeleton {
   width: 100%;
   height: 100vh;
-  background-image: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.2) 40%,
-      rgba(255, 255, 255, 0) 70%
-    ),
-   linear-gradient(lightgrey 100px, transparent 0);
-  background-position: 5px 10px, 5px 10px;
-  background-size: 100px 100px, 97% 120px;
+  background-image: linear-gradient(lightgrey 80px, transparent 0);
+  background-position: 5px 10px;
+  background-size: 97% 100px;
   background-repeat: repeat-y;
-  animation: skeleton 1s infinite;
+  animation: skeleton 1.3s infinite;
 }
 @keyframes skeleton {
 to {
-  background-position:
-    100% 10px,
-    5px 10px
+  background-image: linear-gradient(#E6E6E6 80px, transparent 0); 
 `;
 
-function Loading() {
+function Loading2() {
   return (
     <LoadingContainer>
       <div className="card skeleton" />
@@ -38,4 +30,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default Loading2;
