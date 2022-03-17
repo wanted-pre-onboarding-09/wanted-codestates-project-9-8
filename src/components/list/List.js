@@ -50,7 +50,7 @@ function List() {
 
   useEffect(async () => {
     try {
-      const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+      const PROXY = "https://daground-proxy.herokuapp.com/https://www.chungbuk.go.kr/"
       const { data } = await axios.get(
         `${PROXY}/openapi-json/pubdata/pubMapForest.do?pageNo=${dataIndex}`,
       );
