@@ -52,6 +52,15 @@
 ```
 
 ### 유송현
+#### Main Form List 
+- 휴양림 데이터 추가시 store에 저장된 데이터 형식을 토대로 화면에 나타내었습니다.
+- 사용자 경험을 중점적으로 생각해 pagination과 검색 기능을 추가하였습니다.
+- 데이터가 없을 경우 `저장된 휴양림 데이터가 없습니다.` 메세지를 보여주었습니다.
+
+#### redux persist
+- redux에 store상태와 localstorage 값을 데이터를 추가할때 각각 수정을 해야하나 고민하였지만, redux persist 라이브러를 통해 local에 저장될 데이터를 한번에 관리하였습니다.
+- redux toolkit에 persist를 어떻게 적용해야 할지 초기 store 설정에 이슈가 있었지만 redux toolkit 공식문서에서 힌트를 얻어 해결하였습니다.
+- https://redux-toolkit.js.org/usage/usage-guide
 
 ### 서한석
 - Skeleton UI Loading Component([구현방법 블로그 보러가기](https://jobcoding.tistory.com/214))
