@@ -20,9 +20,9 @@
 
 | 이름   | 직책 | 역할                 |
 | ----- | -- | -------------------- |
-| [유송현](https://github.com/ysh2987) | 팀장 | redux setting / main form list |
+| [윤솔비](https://github.com/y-solb) | 팀 | |
 | [서한석](https://github.com/holystorySeo) | 팀원 | |
-| [윤솔비](https://github.com/y-solb) | 팀원 | |
+| [유송현](https://github.com/ysh2987) | 팀원 | redux setting / main form list |
 | [조영제](https://github.com/youngjeJO) | 팀원 |  |
 | [이지수](https://github.com/mynameisjisoo) | 팀원 |  |
 
