@@ -88,13 +88,14 @@
     - infinity scroll을 적용해 데이터를 다 불러온 후에 target으로 설정한 teg가 화면에 남아있어 스크롤을 움직이면 observer가 반응하는 것을 발견했고 api의 마지막 페이지를 요청하면 target이 보이지 않도록 구현하였습니다.
 
 ### 이지수
-- Toast component
-  - 마운트 후 2초 동안 컴포넌트가 보였다가 사라지게 함
-  - useEffect 내에서 clean up function을 만들어 컴포넌트 언마운트 시 setTimeout의 메소드를 종료시킴
-- Infinity scroll error handling
-  - 처음에는 한번의 API 요청으로 전체 데이터를 받아오고 가져온 데이터를 10개씩 보여주는 식으로 구현을 했었는데, 이번 과제에는 받아오는 데이터가 적었지만 한번에 받아오는 데이터가 많다면 List컴포넌트가 너무 무거워져서 무한스크롤을 적용하는 이유가 없다는 것을 알았음
+#### Toast component
+- animation을 이용해 2초 동안 컴포넌트가 보였다가 사라지게 함
+- toast에 들어갈 내용을 msg state로 관리하고 상위에서 전달받은 toast type에 따라 다른 msg를 보여지게 함
+- useEffect 내에서 clean up function을 만들어 컴포넌트 언마운트 시 setTimeout의 메소드를 종료시킴
+#### Infinity scroll error handling
+- 처음에는 한번의 API 요청으로 전체 데이터를 받아오고 가져온 데이터를 10개씩 보여주는 식으로 구현을 했었는데, 이번 과제에는 받아오는 데이터가 적었지만 한번에 받아오는 데이터가 많다면 List컴포넌트가 너무 무거워져서 무한스크롤을 적용하는 이유가 없다는 것을 알았음
     - 스크롤이 될 때마다 API 요청을 보내서 데이터를 10개씩 받아오는 것으로 수정함
-  - 컴포넌트가 마운트 되면 ListCard가 화면에 렌더링 되기 전에 가장 아래에 있는 Intersection Observer의 target 요소가 화면에 먼저 표시되는데, Intersection observer는 이를 Intersect 되었다고 판단하여 처음 컴포넌트가 마운트 되면 API 요청이 연달아서 2번 일어나는 문제가 발생함
+- 컴포넌트가 마운트 되면 ListCard가 화면에 렌더링 되기 전에 가장 아래에 있는 Intersection Observer의 target 요소가 화면에 먼저 표시되는데, Intersection observer는 이를 Intersect 되었다고 판단하여 처음 컴포넌트가 마운트 되면 API 요청이 연달아서 2번 일어나는 문제가 발생함
     - target의 y값이 특정 값 이상일 때만 observer 콜백 함수를 실행하도록 조건을 추가함
     ```jsx
     const handleIntersect = (entries) => {
