@@ -78,6 +78,14 @@
 - 송현님께서 세팅해 주신 redux persist를 이용해 브라우저의 로컬 스토리지에 데이터 저장했습니다.
 - 초반에는 Modal과 Toast의 상태 관리를 useState로 해주었으나 FormList와 List component에서 중복되는 부분이 많았습니다. 그래서 redux를 통해 전역에서 상태 관리를 할 수 있도록 리팩토링해줬습니다.
 ### 조영제
+ - list page view
+    - axios.get으로 api 요청해 가져온 data에 map을 사용해서 listcard를 구현하였습니다. api를 불러오느 과정에서 발생 될 수 있는 에러를 처리하기 위해 try..catch를 사용했습니다.
+    - 불러온 data가 중복되어 담겨져 있었는데 filter를 사용해서 중복을 없애면 data양이 총 16개가 되면서  infinity scroll 적용이 무의미하다고 느꼈고 또 요청사항에 10개씩 조회되어야 한다는 것을 고려해서 infinity scroll의 시연을 위해 data를 그대로 받아왔습니다.
+    - 배포 후에 api를 요청하는 과정에서 불규칙적으로 데이터가 전달되는 것을 발견했고 사용자가 너무 오래 기다리는 것을 막기위해 axios.defaults.timeout으로 10초 이상이 지나면 오류 메시지가 나오게 하였습니다.
+ - infinity scroll
+    - 무한 스크롤을 처음 구현하였는데 scroll event 방식을 사용하려고 했으나 함수 호출과 reflow 등에 문제점을 있다는 것을 알게되서 intersection Observer를 사용하였습니다.
+    - 스크롤을 내린 상태로 새로고침 하게 되면 스크롤이 그대로 밑에 남아 있어 observer의 target이 노출 되었음에도 data를 불러오지 않는 오류가 발생해 새로고침 시에는 스크롤이 최상단에 위치하도록 하였습니다.
+    - infinity scroll을 적용해 데이터를 다 불러온 후에 target으로 설정한 teg가 화면에 남아있어 스크롤을 움직이면 observer가 반응하는 것을 발견했고 api의 마지막 페이지를 요청하면 target이 보이지 않도록 구현하였습니다.
 
 ### 이지수
 - Toast component
