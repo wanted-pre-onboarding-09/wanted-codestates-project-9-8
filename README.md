@@ -21,7 +21,7 @@
 | 이름   | 직책 | 역할                 |
 | ----- | -- | -------------------- |
 | [윤솔비](https://github.com/y-solb) | 팀장 | modal / 데이터 저장 수정 삭제 |
-| [서한석](https://github.com/holystorySeo) | 팀원 | |
+| [서한석](https://github.com/holystorySeo) | 팀원 | Skeleton UI |
 | [유송현](https://github.com/ysh2987) | 팀원 | redux setting / main form list |
 | [조영제](https://github.com/youngjeJO) | 팀원 | list page / infinity scroll  |
 | [이지수](https://github.com/mynameisjisoo) | 팀원 | toast / infinity scroll assist |
