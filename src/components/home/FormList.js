@@ -35,8 +35,8 @@ function FormList() {
   const offset = (page - 1) * limit;
   return (
     <StyledFormList>
-      {isToast.change && <Toast type="change" isFade={isToast.change} />}
-      {isToast.delete && <Toast type="delete" isFade={isToast.delete} />}
+      {isToast.change && <Toast type="change" />}
+      {isToast.delete && <Toast type="delete" />}
       {dataList.filter((data) => data[selected].includes(keyword)).length ? (
         <>
           {dataList
@@ -70,7 +70,7 @@ function FormList() {
       ) : (
         <StyledNotData>저장된 휴양림 데이터가 없습니다.</StyledNotData>
       )}
-      {isModal && <Modal isToast={isToast} mode="edit" />}
+      {isModal && <Modal mode="edit" />}
     </StyledFormList>
   );
 }

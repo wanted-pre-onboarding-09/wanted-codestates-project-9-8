@@ -77,7 +77,7 @@ function Modal({ mode }) {
 
   return (
     <Background onClick={handleBackground}>
-      {isToast.warning && <Toast type="warning" isFade={isToast.warning} />}
+      {isToast.warning && <Toast type="warning" />}
       <ModalContainer>
         <CloseBtn onClick={handleClose}>&times;</CloseBtn>
         <ModalBox>

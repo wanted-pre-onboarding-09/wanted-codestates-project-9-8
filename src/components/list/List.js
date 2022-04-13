@@ -86,7 +86,7 @@ function List() {
       <ListHeader />
       {!checkError ? <ListCard /> : null}
       <ListContainer checkError={checkError}>
-        {isToast.add && <Toast type="add" isFade={isToast.add} />}
+        {isToast.add && <Toast type="add" />}
         {getData.length === 0 ? (
           <Loading />
         ) : (

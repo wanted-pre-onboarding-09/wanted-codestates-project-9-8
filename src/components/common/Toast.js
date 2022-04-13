@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-function Toast({ type, isFade }) {
+function Toast({ type }) {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -25,11 +25,7 @@ function Toast({ type, isFade }) {
     }
   }, []);
 
-  return (
-    <StyledToast isFade={isFade} msg={msg}>
-      {msg.message}
-    </StyledToast>
-  );
+  return <StyledToast msg={msg}>{msg.message}</StyledToast>;
 }
 const StyledToast = styled.div`
   position: fixed;
@@ -42,14 +38,10 @@ const StyledToast = styled.div`
     msg.type === 'delete' || msg.type === 'warning' ? '#ea3333' : '#268b63'};
   color: white;
   opacity: 0;
+  animation-name: slide;
+  animation-duration: 2s;
+  animation-timing-function: slideIn;
 
-  ${({ isFade }) =>
-    isFade &&
-    css`
-      animation-name: slide;
-      animation-duration: 2s;
-      animation-timing-function: slideIn;
-    `}
   @keyframes slide {
     0% {
       opacity: 1;
@@ -68,6 +60,5 @@ const StyledToast = styled.div`
 
 Toast.propTypes = {
   type: PropTypes.string.isRequired,
-  isFade: PropTypes.bool.isRequired,
 };
 export default Toast;
