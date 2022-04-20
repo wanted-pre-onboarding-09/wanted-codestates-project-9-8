@@ -16,9 +16,6 @@ const listSlice = createSlice({
   name: 'formlist',
   initialState,
   reducers: {
-    addForm(state, action) {
-      state.data = [...state.data, action.payload];
-    },
     createData(state, action) {
       state.data = [...state.data, action.payload];
     },
